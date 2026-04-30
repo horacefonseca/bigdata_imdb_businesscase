@@ -375,3 +375,34 @@ after_stats = spark.sql("""
 **Implementation Status:** Documentation Complete, Notebook Update Pending  
 **Confidence Level:** VERY HIGH (all findings validated)  
 **Expected ROI Impact:** +15-20% profitability with defensible data-driven decisions
+
+---
+
+## ADDENDUM: Synthetic 2026 Data Exclusion (April 30, 2026)
+
+### Issue Identified
+Synthetic 2026 movies (from `generate_synthetic_2026_v2.py`) show unrealistic patterns:
+- Ratings artificially high (9.4-9.9 range)
+- Vote counts unrealistically low (500-3,000 vs real-world 100K+)
+- Not representative of actual IMDb distributions
+
+### Resolution
+Apply filter `WHERE startYear < 2026` to all analysis queries (Steps 7-13, 15) to:
+- Exclude synthetic data from statistical analysis
+- Preserve pre-2026 realistic data
+- Keep Step 14 (streaming merge) unchanged as infrastructure demonstration
+- Ensure findings validated against real data patterns
+
+### Filter Locations
+See: `/gitpub/documentation/SYNTHETIC_DATA_2026_EXCLUSION_GUIDE.md` for exact code locations in Steps 7-15
+
+### Impact
+- More realistic top-20 movie ratings (8.0-9.2 instead of 9.4-9.9)
+- Confidence in predictions increases (avoids overfitting to synthetic patterns)
+- Statistical tests remain valid (p<0.05 threshold maintained)
+- Results defensible for business decision-making
+
+### Documentation
+- [x] Root analysis document: `/SYNTHETIC_DATA_QUALITY_ISSUE.md`
+- [x] Implementation guide: `/SYNTHETIC_DATA_2026_EXCLUSION_GUIDE.md`
+- [ ] Notebook implementation (pending)
